@@ -30,26 +30,33 @@ namespace FreeNetflixMaui.ViewModels
 
         public async Task InitializeAsync()
         {
-            var trendingListTask =  await _tmdbService.GetTrendingAsync();
-            if(trendingListTask?.Any() == true)
-            {
-                foreach (var trending in trendingListTask)
-                {
-                    Trending.Add(trending);
-                }
-            }
+            var trendingListTask = _tmdbService.GetTrendingAsync();
+            var netflixOriginalsListTask = _tmdbService.GetNetflixOriginalAsync();
+            var topRatedListTask = _tmdbService.GetTopRatedAsync();
+            var actionListTask = _tmdbService.GetActionAsync();
 
-            var netflixOriginals = await _tmdbService.GetNetflixOriginalAsync();
-            if (netflixOriginals?.Any() == true)
-            {
-                foreach (var original in netflixOriginals)
-                {
-                    NetflixOriginals.Add(original);
-                }
-            }
+            var medias = await Task.WhenAll(trendingListTask,
+                                    netflixOriginalsListTask,
+                                    topRatedListTask,
+                                    actionListTask);
 
+            var trendingList = medias[0];
+            var netflixOriginalsList = medias[1];
+            var topRatedList = medias[2];
+            var actionList = medias[3];
+
+            TrendingMovie = trendingList.OrderBy(t => Guid.NewGuid())
+                                .FirstOrDefault(t =>
+                                    !string.IsNullOrWhiteSpace(t.DisplayTitle)
+                                    && !string.IsNullOrWhiteSpace(t.Thumbnail));
+
+            SetMediaCollection(trendingList, Trending);
+            SetMediaCollection(netflixOriginalsList, NetflixOriginals);
+            SetMediaCollection(topRatedList, TopRated);
+            SetMediaCollection(actionList, ActionMovies);
 
         }
+
         private static void SetMediaCollection(IEnumerable<Media> medias, ObservableCollection<Media> collection)
         {
             collection.Clear();
