@@ -5,6 +5,7 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="Black"
              xmlns:vm="clr-namespace:FreeNetflixMaui.ViewModels"
+             xmlns:controls="clr-namespace:FreeNetflixMaui.Controls"
              x:DataType="vm:HomeViewModel">
 
     <ContentPage.Resources>
@@ -102,6 +103,22 @@
 
                 </Grid>
 
+                <controls:MovieRow Heading="Top Rated" 
+                                   Movies="{Binding TopRated}" 
+                                   IsLarge="False"
+                                   MediaSelected="MovieRow_MediaSelected"/>
+                <controls:MovieRow Heading="Originals" 
+                                   Movies="{Binding NetflixOriginals}" 
+                                   IsLarge="True"
+                                   MediaSelected="MovieRow_MediaSelected"/>
+                <controls:MovieRow Heading="Trending" 
+                                   Movies="{Binding Trending}" 
+                                   IsLarge="False"
+                                   MediaSelected="MovieRow_MediaSelected"/>
+                <controls:MovieRow Heading="Action" 
+                                   Movies="{Binding ActionMovies}" 
+                                   IsLarge="False"
+                                   MediaSelected="MovieRow_MediaSelected"/>
 
 
             </VerticalStackLayout>
@@ -128,6 +145,11 @@
                 </HorizontalStackLayout>
             </FlexLayout>
         </Grid>
+
+        <controls:MovieInfoBox Media="{Binding SelectedMedia}"
+                               VerticalOptions="End"
+                               IsVisible="{Binding ShowMovieInfoBox}"
+                               Closed="MovieInfoBox_Closed"/>
     </Grid>
 
 
