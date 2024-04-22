@@ -49,6 +49,9 @@
                                    Style="{StaticResource MenuLabel}"/>
                             <Label Text="Categories"
                                    Style="{StaticResource MenuLabel}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="CategoriesMenu_Tapped"/>
+                                </Label.GestureRecognizers>
                             </Label>
                         </FlexLayout>
                     </Grid>
@@ -97,6 +100,10 @@
                             <Label Text="Info"
                                    HorizontalOptions="Center"
                                    Margin="0, 10, 0, 0"/>
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectMediaCommand}"
+                                                  CommandParameter="{Binding TrendingMovie}"/>
+                            </VerticalStackLayout.GestureRecognizers>
                         </VerticalStackLayout>
 
                     </HorizontalStackLayout>

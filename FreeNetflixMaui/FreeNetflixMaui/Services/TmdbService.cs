@@ -23,6 +23,11 @@ namespace FreeNetflixMaui.Services
 
         private HttpClient HttpClient => _httpClientFactory.CreateClient(TmdbHttpClientName);
 
+        public async Task<IEnumerable<Genre>> GetGenresAsync()
+        {
+            var genresWrapper = await HttpClient.GetFromJsonAsync<GenreWrapper>($"{TmdbUrls.MovieGenres}&api_key={ApiKey}");
+            return genresWrapper.Genres;
+        }
 
         public async Task<IEnumerable<Video>?> GetTrailersAsync(int id, string type = "movie")
         {
@@ -57,7 +62,6 @@ namespace FreeNetflixMaui.Services
 
 
     }
-//afewe
     public static class TmdbUrls
     {
         public const string Trending = "3/trending/all/week?language=en-US";
