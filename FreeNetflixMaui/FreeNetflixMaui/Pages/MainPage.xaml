@@ -52,6 +52,10 @@
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="CategoriesMenu_Tapped"/>
                                 </Label.GestureRecognizers>
+                                <Image.GestureRecognizer>
+                                    <TapGestureReognizer Command="{Binding SelectMediaCommand}"
+                                                         CommandParameter="{Binding TrendingMovies}"/>
+                                </Image.GestureRecognizer>
                             </Label>
                         </FlexLayout>
                     </Grid>

@@ -11,7 +11,7 @@ namespace FreeNetflixMaui.Services
 {
     public partial class TmdbService
     {
-        private const string ApiKey = "738b6d8d99b51339705b1037c981a488"; // generate it from tmdb website
+        private const string ApiKey = "738b6d8d99b51339705b1037c981a488";
         public const string TmdbHttpClientName = "TmdbClient";
 
         private readonly IHttpClientFactory _httpClientFactory;
@@ -29,6 +29,16 @@ namespace FreeNetflixMaui.Services
             return genresWrapper.Genres;
         }
 
+        public async Task<IEnumerable<Media>> GetTrendingAsync() =>
+            await GetMediasAsync(TmdbUrls.Trending);
+
+        public async Task<IEnumerable<Media>> GetTopRatedAsync() =>
+            await GetMediasAsync(TmdbUrls.TopRated);
+        public async Task<IEnumerable<Media>> GetNetflixOriginalAsync() =>
+            await GetMediasAsync(TmdbUrls.NetflixOriginals);
+        public async Task<IEnumerable<Media>> GetActionAsync() =>
+            await GetMediasAsync(TmdbUrls.Action);
+
         public async Task<IEnumerable<Video>?> GetTrailersAsync(int id, string type = "movie")
         {
             var videosWrapper = await HttpClient.GetFromJsonAsync<VideosWrapper>(
@@ -42,25 +52,20 @@ namespace FreeNetflixMaui.Services
             return null;
         }
 
-        public async Task<IEnumerable<Media>> GetTrendingAsync() =>
-                    await GetMediasAsync(TmdbUrls.Trending);
-        public async Task<IEnumerable<Media>> GetTopRatedAsync() =>
-            await GetMediasAsync(TmdbUrls.TopRated);
-        public async Task<IEnumerable<Media>> GetNetflixOriginalAsync() =>
-            await GetMediasAsync(TmdbUrls.NetflixOriginals);
-        public async Task<IEnumerable<Media>> GetActionAsync() =>
-            await GetMediasAsync(TmdbUrls.Action);
+        public async Task<MovieDetail> GetMediaDetailsAsync(int id, string type = "movie") =>
+            await HttpClient.GetFromJsonAsync<MovieDetail>(
+                $"{TmdbUrls.GetMovieDetails(id, type)}&api_key={ApiKey}");
 
+        public async Task<IEnumerable<Media>> GetSimilarAsync(int id, string type = "movie") =>
+            await GetMediasAsync(
+                $"{TmdbUrls.GetSimilar(id, type)}&api_key={ApiKey}");
 
-
-        public async Task<IEnumerable<Media>> GetMediasAsync(string url)
+        private async Task<IEnumerable<Media>> GetMediasAsync(string url)
         {
             var trendingMoviesCollection = await HttpClient.GetFromJsonAsync<Movie>($"{url}&api_key={ApiKey}");
             return trendingMoviesCollection.results
                     .Select(r => r.ToMediaObject());
         }
-
-
     }
     public static class TmdbUrls
     {
@@ -74,7 +79,6 @@ namespace FreeNetflixMaui.Services
         public static string GetMovieDetails(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}?language=en-US";
         public static string GetSimilar(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/similar?language=en-US";
     }
-
 
     public class Movie
     {
@@ -97,13 +101,12 @@ namespace FreeNetflixMaui.Services
         public string title { get; set; }
         public string name { get; set; }
         public bool video { get; set; }
-        public string media_type { get; set; } // "movie" or "tv"
+        public string media_type { get; set; }
         public string ThumbnailPath => poster_path ?? backdrop_path;
         public string Thumbnail => $"https://image.tmdb.org/t/p/w600_and_h900_bestv2/{ThumbnailPath}";
         public string ThumbnailSmall => $"https://image.tmdb.org/t/p/w220_and_h330_face/{ThumbnailPath}";
         public string ThumbnailUrl => $"https://image.tmdb.org/t/p/original/{ThumbnailPath}";
         public string DisplayTitle => title ?? name ?? original_title ?? original_name;
-
 
         public Media ToMediaObject() =>
             new()
