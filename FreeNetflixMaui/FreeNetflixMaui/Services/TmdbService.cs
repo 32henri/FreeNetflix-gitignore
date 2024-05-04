@@ -11,7 +11,7 @@ namespace FreeNetflixMaui.Services
 {
     public partial class TmdbService
     {
-        private const string ApiKey = "738b6d8d99b51339705b1037c981a488";
+        private const string ApiKey = "21b882567fc7cbc785f7a9a3b6a713ff";
         public const string TmdbHttpClientName = "TmdbClient";
 
         private readonly IHttpClientFactory _httpClientFactory;
@@ -20,7 +20,6 @@ namespace FreeNetflixMaui.Services
         {
             _httpClientFactory = httpClientFactory;
         }
-
         private HttpClient HttpClient => _httpClientFactory.CreateClient(TmdbHttpClientName);
 
         public async Task<IEnumerable<Genre>> GetGenresAsync()

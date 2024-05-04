@@ -45,7 +45,6 @@ namespace FreeNetflixMaui.ViewModels
             var topRatedList = medias[2];
             var actionList = medias[3];
 
-            // Seting random trending movie from Trending List to the Trending Movie
             TrendingMovie = trendingList.OrderBy(t => Guid.NewGuid())
                                 .FirstOrDefault(t =>
                                     !string.IsNullOrWhiteSpace(t.DisplayTitle)
@@ -56,7 +55,7 @@ namespace FreeNetflixMaui.ViewModels
             SetMediaCollection(topRatedList, TopRated);
             SetMediaCollection(actionList, ActionMovies);
 
-            //SelectedMedia = TrendingMovie;
+
         }
 
         private static void SetMediaCollection(IEnumerable<Media> medias, ObservableCollection<Media> collection)

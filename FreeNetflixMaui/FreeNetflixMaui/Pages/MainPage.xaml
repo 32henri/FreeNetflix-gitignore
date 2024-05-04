@@ -19,7 +19,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
     <Grid Margin="0"
           Padding="0">
         <ScrollView BackgroundColor="Black">
@@ -52,10 +51,6 @@
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="CategoriesMenu_Tapped"/>
                                 </Label.GestureRecognizers>
-                                <Image.GestureRecognizer>
-                                    <TapGestureReognizer Command="{Binding SelectMediaCommand}"
-                                                         CommandParameter="{Binding TrendingMovies}"/>
-                                </Image.GestureRecognizer>
                             </Label>
                         </FlexLayout>
                     </Grid>
@@ -131,7 +126,6 @@
                                    IsLarge="False"
                                    MediaSelected="MovieRow_MediaSelected"/>
 
-
             </VerticalStackLayout>
         </ScrollView>
         <Grid HeightRequest="35"
@@ -162,6 +156,5 @@
                                IsVisible="{Binding ShowMovieInfoBox}"
                                Closed="MovieInfoBox_Closed"/>
     </Grid>
-
 
 </ContentPage>

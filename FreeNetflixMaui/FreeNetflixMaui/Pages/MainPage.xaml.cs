@@ -32,5 +32,4 @@ public partial class MainPage : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(CategoriesPage));
     }
-
 }
